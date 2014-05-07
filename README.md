@@ -1,4 +1,4 @@
 Comp-Org-Final
 ==============
 
-Computer Organization and Design final project
+Final project for Computer Organization and Design (CSCI 2500) - Fall 2014
