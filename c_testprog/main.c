@@ -18,6 +18,6 @@ int main()
 {
 	const char* str = "hello world\n";
 	do_syscall((unsigned int)str, 0, SYS_PRINT_STR);
-	
+
 	return 0;
 }
