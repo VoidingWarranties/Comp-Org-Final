@@ -101,6 +101,9 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//otherwise it's I/J type
 
 	switch (inst->rtype.opcode) {
+		case OP_RTYPE:
+			SimulateRtypeInstruction(inst, memory, ctx);
+			break;
 	}
 
 	//Go on to next instruction by default
