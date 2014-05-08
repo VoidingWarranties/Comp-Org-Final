@@ -30,10 +30,10 @@ enum opcodes
 
 enum functions
 {
-	FUNC_JR			= 0x08,
+	FUNC_JR		= 0x08,
 	FUNC_SYSCALL	= 0x0c,
-	FUNC_ADDU		= 0x21,
-	FUNC_OR			= 0x25
+	FUNC_ADDU	= 0x21,
+	FUNC_OR		= 0x25
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,10 +41,10 @@ enum functions
 
 enum regids
 {
-	REGID_ZERO = 0,
-	REGID_A0 = 4,
-	REGID_SP = 29,
-	REGID_RA = 31
+	REGID_ZERO	= 0,
+	REGID_A0	= 4,
+	REGID_SP	= 29,
+	REGID_RA	= 31
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,30 +56,30 @@ union mips_instruction
 	//R-type format
 	struct
 	{
-		unsigned int func:6;
-		unsigned int shamt:5;
-		unsigned int rd:5;
-		unsigned int rt:5;
-		unsigned int rs:5;
-		unsigned int opcode:6;
+		unsigned int func	: 6;
+		unsigned int shamt	: 5;
+		unsigned int rd		: 5;
+		unsigned int rt		: 5;
+		unsigned int rs		: 5;
+		unsigned int opcode	: 6;
 	} rtype;
-	
+
 	//I-type format
 	struct
 	{
-		unsigned int imm:16;
-		unsigned int rt:5;
-		unsigned int rs:5;
-		unsigned int opcode:6;
+		unsigned int imm	: 16;
+		unsigned int rt		: 5;
+		unsigned int rs		: 5;
+		unsigned int opcode	: 6;
 	} itype;
-	
+
 	//J-type format
 	struct
 	{
-		unsigned int addr:26;
-		unsigned int opcode:6;
+		unsigned int addr	: 26;
+		unsigned int opcode	: 6;
 	} jtype;
-	
+
 	//Write to this to load an instruction as a 32-bit word
 	uint32_t word;
 };
