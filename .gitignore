@@ -1,2 +1,6 @@
+# Compiled files
 *.o
 *.elf
+
+# Temporary files
+*.swp
