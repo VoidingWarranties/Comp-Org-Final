@@ -4,6 +4,7 @@
 	@brief The core of the simulator
  */
 #include "sim.h"
+#include "instructions.h"
 
 /**
 	@brief Read logic for instruction fetch and load instructions
@@ -101,6 +102,9 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//otherwise it's I/J type
 
 	switch (inst->rtype.opcode) {
+		case OP_ADDIU:
+			addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
+			break;
 	}
 
 	//Go on to next instruction by default
