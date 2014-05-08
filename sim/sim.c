@@ -100,9 +100,11 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
 
+	int return_val = 1;
+
 	switch (inst->rtype.opcode) {
 		case OP_RTYPE:
-			SimulateRtypeInstruction(inst, memory, ctx);
+			return_val = SimulateRtypeInstruction(inst, memory, ctx);
 			break;
 	}
 
@@ -110,7 +112,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//Need to change this for branches
 	ctx->pc += 4;
 
-	return 1;
+	return return_val;
 }
 
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -118,13 +120,24 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	//TODO: switch on func, if syscall call SimulateSyscall()
 	//else process instruction normally
 
+	int return_val = 1;
+
 	switch (inst->rtype.func) {
+		case FUNC_SYSCALL:
+			return_val = SimulateSyscall(ctx->regs[v0], memory, ctx);
+			break;
 	}
 
-	return 1;
+	return return_val;
 }
 
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
+	switch (callnum) {
+		case SYSCALL_EXIT:
+			return 0;
+			break;
+	}
+
 	return 1;
 }
