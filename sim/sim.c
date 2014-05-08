@@ -100,6 +100,9 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
 
+	switch (inst->rtype.opcode) {
+	}
+
 	//Go on to next instruction by default
 	//Need to change this for branches
 	ctx->pc += 4;
@@ -111,6 +114,9 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 {
 	//TODO: switch on func, if syscall call SimulateSyscall()
 	//else process instruction normally
+
+	switch (inst->rtype.func) {
+	}
 
 	return 1;
 }
