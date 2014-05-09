@@ -140,6 +140,12 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 		case SYSCALL_PRINT_INT:
 			printf("%d", ctx->regs[a0]);
 			break;
+		case SYSCALL_READ_INT:
+			if (scanf("%d", &ctx->regs[v0]) == EOF) {
+				printf("\nUnable to read stdin. Temrinating...\n");
+				return 0;
+			}
+			break;
 	}
 
 	return 1;
