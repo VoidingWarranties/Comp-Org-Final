@@ -137,6 +137,9 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 		case SYSCALL_EXIT:
 			return 0;
 			break;
+		case SYSCALL_PRINT_INT:
+			printf("%d", ctx->regs[a0]);
+			break;
 	}
 
 	return 1;
