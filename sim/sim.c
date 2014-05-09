@@ -101,9 +101,11 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
 
+	int return_val = 1;
+
 	switch (inst->rtype.opcode) {
 		case OP_ADDIU:
-			addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
+			return_val = addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
 			break;
 	}
 
@@ -111,7 +113,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//Need to change this for branches
 	ctx->pc += 4;
 
-	return 1;
+	return return_val;
 }
 
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
