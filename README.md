@@ -14,3 +14,63 @@ Comp-Org-Final
  - Run "make" in the appropriate test program directory to compile your test code to a MIPS executable.
  - Go to the sim directory and run "make" to compile your simulator
  - Run "./sim ../test_program_dir/input_file.elf" (using the appropriate input file name) to launch the simulation.
+
+### Instructions Left to Implement:
+
+#### R-type:
+- add
+- addu
+- and
+- or
+- sub
+- subu
+- xor
+- slt
+- slti
+- sltiu
+- sltu
+- sll
+- sllv
+- sra
+- srl
+- srlv
+- div
+- divu
+- mult
+- multu
+
+#### I-type:
+- addi
+- ~~addiu~~
+- andi
+- lui
+- ori
+- xori
+
+#### Move:
+- mfhi
+- mflo
+
+#### Branch:
+- beq
+- bgez
+- bgtz
+- blez
+- bltz
+- bne
+- bgezal
+- bltzal
+
+#### Jump:
+- j
+- jal
+- jr
+
+#### Memory load/store:
+- ~~lw~~
+- ~~sw~~
+- ~~lb~~
+- ~~sb~~
+
+#### Misc:
+- syscall
