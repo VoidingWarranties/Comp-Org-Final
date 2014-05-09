@@ -110,6 +110,12 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_ADDIU:
 			return_val = addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
 			break;
+		case OP_LW:
+			return_val = lw(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
+			break;
+		case OP_SW:
+			return_val = sw(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
+			break;
 	}
 
 	//Go on to next instruction by default
