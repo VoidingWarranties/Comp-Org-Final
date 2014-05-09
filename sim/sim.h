@@ -39,6 +39,7 @@ enum functions
 enum syscall
 {
 	SYSCALL_PRINT_INT	= 1,
+	SYSCALL_READ_INT	= 5,
 	SYSCALL_EXIT		= 10
 };
 
