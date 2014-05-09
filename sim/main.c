@@ -90,7 +90,7 @@ void ReadELF(const char* fname, struct virtual_mem_region** memory, struct conte
 	}
 
 	//Save the entry point address
-	printf("    Virtual address of entry point is %08x\n", hdr.e_entry);
+	printf("    Virtual address of entry point is 0x%08x\n", hdr.e_entry);
 	ctx->pc = hdr.e_entry;
 
 	//Read the program headers
@@ -120,7 +120,7 @@ void ReadELF(const char* fname, struct virtual_mem_region** memory, struct conte
 		region->data = calloc(phdr.p_memsz, 1);
 		region->next = *memory;
 		*memory = region;
-		printf("    Mapping 0x%x bytes of virtual memory from executable at address %x\n", region->len, region->vaddr);
+		printf("    Mapping %5d bytes of virtual memory from executable at address 0x%08x\n", region->len, region->vaddr);
 
 		//Skip non-loadable stuff
 		if(phdr.p_type != PT_LOAD)
@@ -164,5 +164,5 @@ void ReadELF(const char* fname, struct virtual_mem_region** memory, struct conte
 	region->next = *memory;
 	*memory = region;
 	ctx->regs[sp] = region->vaddr + region->len - 4;
-	printf("    Mapping 0x%x bytes of virtual memory for stack at address %x\n", region->len, region->vaddr);
+	printf("    Mapping %d bytes of virtual memory for stack at address 0x%08x\n", region->len, region->vaddr);
 }
