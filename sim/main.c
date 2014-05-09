@@ -163,6 +163,6 @@ void ReadELF(const char* fname, struct virtual_mem_region** memory, struct conte
 	region->data = calloc(region->len, 1);
 	region->next = *memory;
 	*memory = region;
-	ctx->regs[REGID_SP] = region->vaddr + region->len - 4;
+	ctx->regs[sp] = region->vaddr + region->len - 4;
 	printf("    Mapping 0x%x bytes of virtual memory for stack at address %x\n", region->len, region->vaddr);
 }
