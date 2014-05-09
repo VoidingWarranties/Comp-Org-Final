@@ -25,7 +25,9 @@ enum opcodes
 	OP_ADDIU	= 0x09,
 	OP_LUI		= 0x0f,
 	OP_LW		= 0x23,
-	OP_SW		= 0x2b
+	OP_SW		= 0x2b,
+	OP_LB		= 0x20,
+	OP_SB		= 0x28
 };
 
 enum functions
@@ -135,6 +137,8 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx);
 
 uint32_t FetchWordFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory);
 void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_mem_region* memory);
+uint8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory);
+void StoreByteToVirtualMemory(uint32_t address, uint8_t value, struct virtual_mem_region* memory);
 
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);

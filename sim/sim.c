@@ -73,6 +73,55 @@ void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_m
 	exit(1);
 }
 
+uint8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory)
+{
+	//Traverse the linked list until we find the range of interest
+	while(memory != NULL)
+	{
+		//Not in range? Try next one
+		if( (address < memory->vaddr) || (address >= (memory->vaddr + memory->len)) )
+		{
+			memory = memory->next;
+			continue;
+		}
+
+		uint32_t offset = address - memory->vaddr;
+		uint32_t byte_offset = 8 * (offset % 4);
+		uint32_t word = memory->data[offset/4];
+		uint8_t byte = (word >> byte_offset) & 255;
+		return byte;
+	}
+
+	//Didn't find anything! Give up
+	printf("SEGFAULT: attempted to read word from nonexistent virtual address %08x\n", address);
+	exit(1);
+}
+
+void StoreByteToVirtualMemory(uint32_t address, uint8_t value, struct virtual_mem_region* memory)
+{
+	//Traverse the linked list until we find the range of interest
+	while(memory != NULL)
+	{
+		//Not in range? Try next one
+		if( (address < memory->vaddr) || (address >= (memory->vaddr + memory->len)) )
+		{
+			memory = memory->next;
+			continue;
+		}
+
+		uint32_t offset = address - memory->vaddr;
+		uint32_t byte_offset = 8 * (offset % 4);
+		uint32_t word = memory->data[offset/4];
+		word = word | (255 << byte_offset) & (value << byte_offset);
+		memory->data[offset/4] = word;
+		return;
+	}
+
+	//Didn't find anything! Give up
+	printf("SEGFAULT: attempted to read word from nonexistent virtual address %08x\n", address);
+	exit(1);
+}
+
 /**
 	@brief Runs the actual simulation
  */
@@ -115,6 +164,12 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			break;
 		case OP_SW:
 			return_val = sw(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
+			break;
+		case OP_LB:
+			return_val = lb(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
+			break;
+		case OP_SB:
+			return_val = sb(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
 			break;
 	}
 
