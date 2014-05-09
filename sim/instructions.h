@@ -6,6 +6,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // I-type
 
-void addiu(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx);
+int addiu(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx);
 
 #endif

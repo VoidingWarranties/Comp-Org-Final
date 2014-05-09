@@ -108,7 +108,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			return_val = SimulateRtypeInstruction(inst, memory, ctx);
 			break;
 		case OP_ADDIU:
-			addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
+			return_val = addiu(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
 			break;
 	}
 
