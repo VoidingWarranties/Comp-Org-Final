@@ -40,12 +40,12 @@ Comp-Org-Final
 - multu
 
 #### I-type:
-- addi
-- ~~addiu~~
-- andi
-- lui
-- ori
-- xori
+- ~~addi~~
+- ~~addiu~~ - tested somewhat
+- ~~andi~~
+- ~~lui~~
+- ~~ori~~
+- ~~xori~~
 
 #### Move:
 - mfhi
@@ -67,10 +67,10 @@ Comp-Org-Final
 - jr
 
 #### Memory load/store:
-- ~~lw~~
-- ~~sw~~
-- ~~lb~~
-- ~~sb~~
+- ~~lw~~ - tested somewhat
+- ~~sw~~ - tested somewhat
+- ~~lb~~ - tested somewhat
+- ~~sb~~ - tested somewhat
 
 #### Misc:
 - syscall
