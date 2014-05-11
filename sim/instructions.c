@@ -15,24 +15,40 @@ int addi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 
 int andi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 {
+	if (rt == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
 	ctx->regs[rt] = ctx->regs[rs] & imm;
 	return 1;
 }
 
 int ori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 {
+	if (rt == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
 	ctx->regs[rt] = ctx->regs[rs] | imm;
 	return 1;
 }
 
 int xori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 {
+	if (rt == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
 	ctx->regs[rt] = ctx->regs[rs] ^ imm;
 	return 1;
 }
 
 int lui(uint32_t rt, uint32_t imm, struct context* ctx)
 {
+	if (rt == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
 	ctx->regs[rt] = imm << 16;
 	return 1;
 }
