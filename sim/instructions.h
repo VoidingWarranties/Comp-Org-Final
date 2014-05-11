@@ -7,6 +7,8 @@
 // R-type
 
 int MIPS_add(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx);
+int MIPS_and(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx);
+int MIPS_or(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // I-type

@@ -38,11 +38,12 @@ enum opcodes
 enum functions
 {
 	FUNC_JR		= 0x08,
-	FUNC_OR		= 0x25,
 
 	FUNC_SYSCALL	= 0x0c,
 	FUNC_ADD	= 0x20,
-	FUNC_ADDU	= 0x21
+	FUNC_ADDU	= 0x21,
+	FUNC_AND	= 0x24,
+	FUNC_OR		= 0x25
 };
 
 enum syscall

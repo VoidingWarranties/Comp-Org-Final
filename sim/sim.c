@@ -218,6 +218,12 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 			// addu is effectively the same as add since we are not implementing overflow traps here
 			return_val = MIPS_add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
 			break;
+		case FUNC_AND:
+			return_val = MIPS_and(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			break;
+		case FUNC_OR:
+			return_val = MIPS_or(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			break;
 	}
 
 	return return_val;
