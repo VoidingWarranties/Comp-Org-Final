@@ -22,12 +22,15 @@ enum opcodes
 {
 	OP_RTYPE	= 0x00,
 	OP_JAL		= 0x03,
+
+	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
-	OP_LUI		= 0x0f,
-	OP_LW		= 0x23,
-	OP_SW		= 0x2b,
 	OP_LB		= 0x20,
-	OP_SB		= 0x28
+	OP_LW		= 0x23,
+	OP_SB		= 0x28,
+	OP_SW		= 0x2b,
+
+	OP_LUI		= 0x0f
 };
 
 enum functions
