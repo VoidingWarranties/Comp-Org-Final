@@ -43,6 +43,8 @@ enum functions
 
 	FUNC_SLL	= 0x00,
 	FUNC_SRL	= 0x02,
+	FUNC_SLLV	= 0x04,
+	FUNC_SRLV	= 0x06,
 	FUNC_SYSCALL	= 0x0c,
 	FUNC_ADD	= 0x20,
 	FUNC_ADDU	= 0x21,

@@ -264,6 +264,12 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 		case FUNC_SRL:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> inst->rtype.shamt;
 			break;
+		case FUNC_SLLV:
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] << ctx->regs[inst->rtype.rs];
+			break;
+		case FUNC_SRLV:
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> ctx->regs[inst->rtype.rs];
+			break;
 	}
 
 	return 1;

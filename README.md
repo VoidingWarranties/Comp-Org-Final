@@ -28,10 +28,10 @@ Comp-Org-Final
 - ~~slt~~
 - ~~sltu~~
 - ~~sll~~
-- sllv
+- ~~sllv~~
 - sra
 - ~~srl~~
-- srlv
+- ~~srlv~~
 - div
 - divu
 - mult
