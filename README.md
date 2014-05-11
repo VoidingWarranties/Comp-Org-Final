@@ -29,7 +29,7 @@ Comp-Org-Final
 - ~~sltu~~
 - ~~sll~~
 - ~~sllv~~
-- sra
+- ~~sra~~
 - ~~srl~~
 - ~~srlv~~
 - div
