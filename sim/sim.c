@@ -4,7 +4,6 @@
 	@brief The core of the simulator
  */
 #include "sim.h"
-#include "instructions.h"
 
 /**
 	@brief Read logic for instruction fetch and load instructions
@@ -151,45 +150,54 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	//otherwise it's I/J type
 
 	int return_val = 1;
+	unsigned int opcode = inst->rtype.opcode;
 
-	switch (inst->rtype.opcode) {
-		case OP_RTYPE:
-			return_val = SimulateRtypeInstruction(inst, memory, ctx);
-			break;
+	if (opcode == OP_RTYPE) {
+		return_val = SimulateRtypeInstruction(inst, memory, ctx);
+	}
 
+	// insert instructions that don't modify rt here
+
+	if (inst->itype.rt == zero &&
+	    (opcode == OP_ADDI || opcode == OP_ADDIU || opcode == OP_ANDI || opcode == OP_ORI || opcode == OP_XORI ||
+	     opcode == OP_LUI || opcode == OP_LW || opcode == OP_LB)) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
+	switch (opcode) {
 		// I-type
 		case OP_ADDI:
-			return_val = MIPS_addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
 			break;
 		case OP_ADDIU:
 			// addiu is effectively the same as addi since we are not implementing overflow traps here
-			return_val = MIPS_addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
 			break;
 		case OP_ANDI:
-			return_val = MIPS_andi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
 			break;
 		case OP_ORI:
-			return_val = MIPS_ori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] | inst->itype.imm;
 			break;
 		case OP_XORI:
-			return_val = MIPS_xori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] ^ inst->itype.imm;
 			break;
 
 		// Memory load / store
 		case OP_LUI:
-			return_val = MIPS_lui(inst->itype.rt, inst->itype.imm, ctx);
+			ctx->regs[inst->itype.rt] = inst->itype.imm << 16;
 			break;
 		case OP_LW:
-			return_val = MIPS_lw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
 			break;
 		case OP_SW:
-			return_val = MIPS_sw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 			break;
 		case OP_LB:
-			return_val = MIPS_lb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			ctx->regs[inst->itype.rt] = FetchByteFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
 			break;
 		case OP_SB:
-			return_val = MIPS_sb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			StoreByteToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 			break;
 	}
 
@@ -205,38 +213,40 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	//TODO: switch on func, if syscall call SimulateSyscall()
 	//else process instruction normally
 
-	int return_val = 1;
-
+	if (inst->rtype.func == FUNC_SYSCALL) {
+		return SimulateSyscall(ctx->regs[v0], memory, ctx);
+	}
+	if (inst->rtype.rd == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
 	switch (inst->rtype.func) {
-		case FUNC_SYSCALL:
-			return_val = SimulateSyscall(ctx->regs[v0], memory, ctx);
-			break;
 		case FUNC_ADD:
-			return_val = MIPS_add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_ADDU:
 			// addu is effectively the same as add since we are not implementing overflow traps here
-			return_val = MIPS_add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_SUB:
-			return_val = MIPS_sub(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_SUBU:
 			// subu is effectively the same as sub since we are not implementing overflow traps here
-			return_val = MIPS_sub(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_AND:
-			return_val = MIPS_and(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] & ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_OR:
-			return_val = MIPS_or(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] | ctx->regs[inst->rtype.rt];
 			break;
 		case FUNC_XOR:
-			return_val = MIPS_xor(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] ^ ctx->regs[inst->rtype.rt];
 			break;
 	}
 
-	return return_val;
+	return 1;
 }
 
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
@@ -244,7 +254,6 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 	switch (callnum) {
 		case SYSCALL_EXIT:
 			return 0;
-			break;
 		case SYSCALL_PRINT_INT:
 			printf("%d", ctx->regs[a0]);
 			break;
