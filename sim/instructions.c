@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // R-type
 
-int add(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx)
+int MIPS_add(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx)
 {
 	if (rd == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -16,7 +16,7 @@ int add(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // I-type
 
-int addi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
+int MIPS_addi(uint32_t rs, uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -26,7 +26,7 @@ int addi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 	return 1;
 }
 
-int andi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
+int MIPS_andi(uint32_t rs, uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -36,7 +36,7 @@ int andi(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 	return 1;
 }
 
-int ori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
+int MIPS_ori(uint32_t rs, uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -46,7 +46,7 @@ int ori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 	return 1;
 }
 
-int xori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
+int MIPS_xori(uint32_t rs, uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -59,7 +59,7 @@ int xori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Memory load / store
 
-int lui(uint32_t rt, uint32_t imm, struct context* ctx)
+int MIPS_lui(uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -69,7 +69,7 @@ int lui(uint32_t rt, uint32_t imm, struct context* ctx)
 	return 1;
 }
 
-int lw(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
+int MIPS_lw(uint32_t rs, uint32_t rt, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -79,13 +79,13 @@ int lw(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory
 	return 1;
 }
 
-int sw(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
+int MIPS_sw(uint32_t rs, uint32_t rt, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
 {
 	StoreWordToVirtualMemory(ctx->regs[rs] + imm, ctx->regs[rt], memory);
 	return 1;
 }
 
-int lb(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
+int MIPS_lb(uint32_t rs, uint32_t rt, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (rt == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
@@ -95,7 +95,7 @@ int lb(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory
 	return 1;
 }
 
-int sb(uint32_t rt, uint32_t rs, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
+int MIPS_sb(uint32_t rs, uint32_t rt, uint32_t imm, struct virtual_mem_region* memory, struct context* ctx)
 {
 	StoreByteToVirtualMemory(ctx->regs[rs] + imm, ctx->regs[rt], memory);
 	return 1;

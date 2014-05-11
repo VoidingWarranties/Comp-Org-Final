@@ -159,37 +159,37 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 
 		// I-type
 		case OP_ADDI:
-			return_val = addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
 			break;
 		case OP_ADDIU:
 			// addiu is effectively the same as addi since we are not implementing overflow traps here
-			return_val = addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_addi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
 			break;
 		case OP_ANDI:
-			return_val = andi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_andi(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
 			break;
 		case OP_ORI:
-			return_val = ori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_ori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
 			break;
 		case OP_XORI:
-			return_val = xori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_xori(inst->itype.rs, inst->itype.rt, inst->itype.imm, ctx);
 			break;
 
 		// Memory load / store
 		case OP_LUI:
-			return_val = lui(inst->itype.rt, inst->itype.imm, ctx);
+			return_val = MIPS_lui(inst->itype.rt, inst->itype.imm, ctx);
 			break;
 		case OP_LW:
-			return_val = lw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			return_val = MIPS_lw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
 			break;
 		case OP_SW:
-			return_val = sw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			return_val = MIPS_sw(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
 			break;
 		case OP_LB:
-			return_val = lb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			return_val = MIPS_lb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
 			break;
 		case OP_SB:
-			return_val = sb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
+			return_val = MIPS_sb(inst->itype.rs, inst->itype.rt, inst->itype.imm, memory, ctx);
 			break;
 	}
 
@@ -212,11 +212,11 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 			return_val = SimulateSyscall(ctx->regs[v0], memory, ctx);
 			break;
 		case FUNC_ADD:
-			return_val = add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			return_val = MIPS_add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
 			break;
 		case FUNC_ADDU:
 			// addu is effectively the same as add since we are not implementing overflow traps here
-			return_val = add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			return_val = MIPS_add(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
 			break;
 	}
 
