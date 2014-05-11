@@ -18,8 +18,8 @@ Comp-Org-Final
 ### Instructions Left to Implement:
 
 #### R-type:
-- add
-- addu
+- ~~add~~
+- ~~addu~~
 - and
 - or
 - sub

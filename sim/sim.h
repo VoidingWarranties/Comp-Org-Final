@@ -20,9 +20,9 @@
 
 enum opcodes
 {
-	OP_RTYPE	= 0x00,
 	OP_JAL		= 0x03,
 
+	OP_RTYPE	= 0x00,
 	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
 	OP_ANDI		= 0x0c,
@@ -33,15 +33,16 @@ enum opcodes
 	OP_LW		= 0x23,
 	OP_SB		= 0x28,
 	OP_SW		= 0x2b
-
 };
 
 enum functions
 {
 	FUNC_JR		= 0x08,
+	FUNC_OR		= 0x25,
+
 	FUNC_SYSCALL	= 0x0c,
-	FUNC_ADDU	= 0x21,
-	FUNC_OR		= 0x25
+	FUNC_ADD	= 0x20,
+	FUNC_ADDU	= 0x21
 };
 
 enum syscall
