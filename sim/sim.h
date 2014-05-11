@@ -25,14 +25,14 @@ enum opcodes
 
 	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
-	OP_ANDI		= 0x0C,
-	OP_ORI		= 0x0D,
+	OP_ANDI		= 0x0c,
+	OP_ORI		= 0x0d,
+	OP_LUI		= 0x0f,
 	OP_LB		= 0x20,
 	OP_LW		= 0x23,
 	OP_SB		= 0x28,
-	OP_SW		= 0x2b,
+	OP_SW		= 0x2b
 
-	OP_LUI		= 0x0f
 };
 
 enum functions

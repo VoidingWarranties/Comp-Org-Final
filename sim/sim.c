@@ -169,6 +169,9 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_ORI:
 			return_val = ori(inst->itype.rt, inst->itype.rs, inst->itype.imm, ctx);
 			break;
+		case OP_LUI:
+			return_val = lui(inst->itype.rt, inst->itype.imm, ctx);
+			break;
 		case OP_LW:
 			return_val = lw(inst->itype.rt, inst->itype.rs, inst->itype.imm, memory, ctx);
 			break;
