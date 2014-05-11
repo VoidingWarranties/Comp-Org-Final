@@ -244,6 +244,11 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 		case FUNC_XOR:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] ^ ctx->regs[inst->rtype.rt];
 			break;
+		case FUNC_SLT:
+			// test this extensively to make sure it makes signed comparisons correctly
+			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int32_t)ctx->regs[inst->rtype.rt] ? 1 : 0;
+		case FUNC_SLTU:
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] < ctx->regs[inst->rtype.rt] ? 1 : 0;
 	}
 
 	return 1;

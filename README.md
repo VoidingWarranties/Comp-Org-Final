@@ -25,10 +25,8 @@ Comp-Org-Final
 - ~~sub~~
 - ~~subu~~
 - ~~xor~~
-- slt
-- slti
-- sltiu
-- sltu
+- ~~slt~~
+- ~~sltu~~
 - sll
 - sllv
 - sra
@@ -46,6 +44,8 @@ Comp-Org-Final
 - ~~lui~~
 - ~~ori~~
 - ~~xori~~
+- slti
+- sltiu
 
 #### Move:
 - mfhi

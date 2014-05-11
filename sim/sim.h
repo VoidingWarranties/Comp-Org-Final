@@ -46,7 +46,9 @@ enum functions
 	FUNC_SUBU	= 0x23,
 	FUNC_AND	= 0x24,
 	FUNC_OR		= 0x25,
-	FUNC_XOR	= 0x26
+	FUNC_XOR	= 0x26,
+	FUNC_SLT	= 0x2a,
+	FUNC_SLTU	= 0x2b
 };
 
 enum syscall
