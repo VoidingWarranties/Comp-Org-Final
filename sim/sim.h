@@ -27,6 +27,7 @@ enum opcodes
 	OP_ADDIU	= 0x09,
 	OP_ANDI		= 0x0c,
 	OP_ORI		= 0x0d,
+	OP_XORI		= 0x0e,
 	OP_LUI		= 0x0f,
 	OP_LB		= 0x20,
 	OP_LW		= 0x23,

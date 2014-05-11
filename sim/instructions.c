@@ -25,6 +25,12 @@ int ori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
 	return 1;
 }
 
+int xori(uint32_t rt, uint32_t rs, uint32_t imm, struct context* ctx)
+{
+	ctx->regs[rt] = ctx->regs[rs] ^ imm;
+	return 1;
+}
+
 int lui(uint32_t rt, uint32_t imm, struct context* ctx)
 {
 	ctx->regs[rt] = imm << 16;
