@@ -25,6 +25,8 @@ enum opcodes
 	OP_RTYPE	= 0x00,
 	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
+	OP_SLTI		= 0x0a,
+	OP_SLTIU	= 0x0b,
 	OP_ANDI		= 0x0c,
 	OP_ORI		= 0x0d,
 	OP_XORI		= 0x0e,

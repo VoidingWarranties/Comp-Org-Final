@@ -44,8 +44,8 @@ Comp-Org-Final
 - ~~lui~~
 - ~~ori~~
 - ~~xori~~
-- slti
-- sltiu
+- ~~slti~~
+- ~~sltiu~~
 
 #### Move:
 - mfhi

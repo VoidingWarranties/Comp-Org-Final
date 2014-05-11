@@ -159,7 +159,8 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	// insert instructions that don't modify rt here
 
 	if (inst->itype.rt == zero &&
-	    (opcode == OP_ADDI || opcode == OP_ADDIU || opcode == OP_ANDI || opcode == OP_ORI || opcode == OP_XORI ||
+	    (opcode == OP_ADDI || opcode == OP_ADDIU || opcode == OP_SLTI || opcode == OP_SLTIU ||
+	     opcode == OP_ANDI || opcode == OP_ORI || opcode == OP_XORI ||
 	     opcode == OP_LUI || opcode == OP_LW || opcode == OP_LB)) {
 		printf("\nCannot modify $zero register! Terminating...\n");
 		return 0;
@@ -172,6 +173,12 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_ADDIU:
 			// addiu is effectively the same as addi since we are not implementing overflow traps here
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+			break;
+		case OP_SLTI:
+			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int16_t)inst->itype.imm ? 1 : 0;
+			break;
+		case OP_SLTIU:
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] < inst->itype.imm ? 1 : 0;
 			break;
 		case OP_ANDI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
