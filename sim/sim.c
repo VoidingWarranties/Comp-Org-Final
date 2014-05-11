@@ -231,6 +231,9 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 		case FUNC_OR:
 			return_val = MIPS_or(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
 			break;
+		case FUNC_XOR:
+			return_val = MIPS_xor(inst->rtype.rs, inst->rtype.rt, inst->rtype.rd, ctx);
+			break;
 	}
 
 	return return_val;

@@ -43,6 +43,16 @@ int MIPS_or(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx)
 	return 1;
 }
 
+int MIPS_xor(uint32_t rs, uint32_t rt, uint32_t rd, struct context* ctx)
+{
+	if (rd == zero) {
+		printf("\nCannot modify $zero register! Terminating...\n");
+		return 0;
+	}
+	ctx->regs[rd] = ctx->regs[rs] ^ ctx->regs[rt];
+	return 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // I-type
 
