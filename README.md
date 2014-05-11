@@ -20,11 +20,11 @@ Comp-Org-Final
 #### R-type:
 - ~~add~~
 - ~~addu~~
-- and
-- or
-- sub
-- subu
-- xor
+- ~~and~~
+- ~~or~~
+- ~~sub~~
+- ~~subu~~
+- ~~xor~~
 - slt
 - slti
 - sltiu
