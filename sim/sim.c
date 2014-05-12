@@ -211,6 +211,13 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 				ctx->pc += (inst->itype.imm << 2);
 			}
 			return 1;
+		case OP_J:
+			ctx->pc += (inst->jtype.addr << 2);
+			return 1;
+		case OP_JAL:
+			ctx->regs[ra] = ctx->pc + 4;
+			ctx->pc += (inst->jtype.addr << 2);
+			return 1;
 	}
 
 	if (inst->itype.rt == zero &&
@@ -297,6 +304,9 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 		case FUNC_DIVU:
 			ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
 			ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
+			return 1;
+		case FUNC_JR:
+			ctx->pc = ctx->regs[inst->rtype.rs];
 			return 1;
 	}
 	if (inst->rtype.rd == zero) {

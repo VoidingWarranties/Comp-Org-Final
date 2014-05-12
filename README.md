@@ -62,9 +62,9 @@ Comp-Org-Final
 - ~~blez~~
 
 #### Jump:
-- j
-- jal
-- jr
+- ~~j~~
+- ~~jal~~
+- ~~jr~~
 
 #### Memory load/store:
 - ~~lw~~ - tested somewhat

@@ -20,10 +20,10 @@
 
 enum opcodes
 {
-	OP_JAL		= 0x03,
-
 	OP_RTYPE	= 0x00,
 	OP_BLTZ_BGEZ	= 0x01,
+	OP_J		= 0x02,
+	OP_JAL		= 0x03,
 	OP_BEQ		= 0x04,
 	OP_BNE		= 0x05,
 	OP_BLEZ		= 0x06,
@@ -44,13 +44,12 @@ enum opcodes
 
 enum functions
 {
-	FUNC_JR		= 0x08,
-
 	FUNC_SLL	= 0x00,
 	FUNC_SRL	= 0x02,
 	FUNC_SRA	= 0x03,
 	FUNC_SLLV	= 0x04,
 	FUNC_SRLV	= 0x06,
+	FUNC_JR		= 0x08,
 	FUNC_SYSCALL	= 0x0c,
 	FUNC_MFHI	= 0x10,
 	FUNC_MFLO	= 0x12,
