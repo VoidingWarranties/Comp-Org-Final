@@ -171,6 +171,22 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 				ctx->pc += 4 * inst->itype.imm;
 			}
 			return 1;
+		case OP_BGEZ_BLTZ:
+			switch (inst->itype.rt) {
+				case BRANCH_BLTZ:
+					if (ctx->regs[inst->itype.rs] < 0) {
+						ctx->pc += (inst->itype.imm << 2);
+					}
+					return 1;
+				case BRANCH_BGEZ:
+					if (ctx->regs[inst->itype.rs] >= 0) {
+						ctx->pc += (inst->itype.imm << 2);
+					}
+					return 1;
+				default:
+					printf("\nUnknown branching instruction! Terminating...\n");
+					return 0;
+			}
 	}
 
 	if (inst->itype.rt == zero &&

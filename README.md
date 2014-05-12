@@ -54,12 +54,12 @@ Comp-Org-Final
 #### Branch:
 - ~~beq~~
 - ~~bne~~
-- bgez
-- bgtz
-- blez
-- bltz
+- ~~bgez~~
+- ~~bltz~~
 - bgezal
 - bltzal
+- bgtz
+- blez
 
 #### Jump:
 - j

@@ -23,6 +23,7 @@ enum opcodes
 	OP_JAL		= 0x03,
 
 	OP_RTYPE	= 0x00,
+	OP_BLTZ_BGEZ	= 0x01,
 	OP_BEQ		= 0x04,
 	OP_BNE		= 0x05,
 	OP_ADDI		= 0x08,
@@ -64,6 +65,12 @@ enum functions
 	FUNC_XOR	= 0x26,
 	FUNC_SLT	= 0x2a,
 	FUNC_SLTU	= 0x2b
+};
+
+enum branching
+{
+	BRANCH_BLTZ	= 0x00,
+	BRANCH_BGEZ	= 0x01
 };
 
 enum syscall
