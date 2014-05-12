@@ -146,14 +146,17 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
  */
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	//Go on to next instruction by default
+	//Need to change this for branches
+	ctx->pc += 4;
+
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
 
-	int return_val = 1;
 	unsigned int opcode = inst->rtype.opcode;
 
 	if (opcode == OP_RTYPE) {
-		return_val = SimulateRtypeInstruction(inst, memory, ctx);
+		return SimulateRtypeInstruction(inst, memory, ctx);
 	}
 
 	// insert instructions that don't modify rt here
@@ -169,50 +172,48 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		// I-type
 		case OP_ADDI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
-			break;
+			return 1;
 		case OP_ADDIU:
 			// addiu is effectively the same as addi since we are not implementing overflow traps here
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
-			break;
+			return 1;
 		case OP_SLTI:
 			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int16_t)inst->itype.imm ? 1 : 0;
-			break;
+			return 1;
 		case OP_SLTIU:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] < inst->itype.imm ? 1 : 0;
-			break;
+			return 1;
 		case OP_ANDI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
-			break;
+			return 1;
 		case OP_ORI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] | inst->itype.imm;
-			break;
+			return 1;
 		case OP_XORI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] ^ inst->itype.imm;
-			break;
+			return 1;
 
 		// Memory load / store
 		case OP_LUI:
 			ctx->regs[inst->itype.rt] = inst->itype.imm << 16;
-			break;
+			return 1;
 		case OP_LW:
 			ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
-			break;
+			return 1;
 		case OP_SW:
 			StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
-			break;
+			return 1;
 		case OP_LB:
 			ctx->regs[inst->itype.rt] = FetchByteFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
-			break;
+			return 1;
 		case OP_SB:
 			StoreByteToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
-			break;
+			return 1;
+
+		default:
+			printf("\nUnknown instruction! Terminating...\n");
+			return 0;
 	}
-
-	//Go on to next instruction by default
-	//Need to change this for branches
-	ctx->pc += 4;
-
-	return return_val;
 }
 
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -223,53 +224,77 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	if (inst->rtype.func == FUNC_SYSCALL) {
 		return SimulateSyscall(ctx->regs[v0], memory, ctx);
 	}
+	// instructions that do not modify rd
+	switch (inst->rtype.func) {
+		case FUNC_MULT: {
+			int64_t result = (int64_t)((int32_t)ctx->regs[inst->rtype.rs]) * (int64_t)((int32_t)ctx->regs[inst->rtype.rt]);
+			ctx->LO = (result << 32) >> 32;
+			ctx->HI = result >> 32;
+			return 1;
+		}
+		case FUNC_MULTU: {
+			uint64_t result = (uint64_t)ctx->regs[inst->rtype.rs] * (uint64_t)ctx->regs[inst->rtype.rt];
+			ctx->LO = (result << 32) >> 32;
+			ctx->HI = result >> 32;
+			return 1;
+		}
+		case FUNC_DIV:
+			ctx->LO = (int32_t)ctx->regs[inst->rtype.rs] / (int32_t)ctx->regs[inst->rtype.rt];
+			ctx->HI = (int32_t)ctx->regs[inst->rtype.rs] % (int32_t)ctx->regs[inst->rtype.rt];
+			return 1;
+		case FUNC_DIVU:
+			ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
+			ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
+			return 1;
+	}
 	if (inst->rtype.rd == zero) {
 		printf("\nCannot modify $zero register! Terminating...\n");
 		return 0;
 	}
+	// instructions that do modify rd
 	switch (inst->rtype.func) {
 		case FUNC_ADD:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_ADDU:
 			// addu is effectively the same as add since we are not implementing overflow traps here
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_SUB:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_SUBU:
 			// subu is effectively the same as sub since we are not implementing overflow traps here
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_AND:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] & ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_OR:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] | ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_XOR:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] ^ ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
 		case FUNC_SLT:
 			// test this extensively to make sure it makes signed comparisons correctly
 			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int32_t)ctx->regs[inst->rtype.rt] ? 1 : 0;
-			break;
+			return 1;
 		case FUNC_SLTU:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] < ctx->regs[inst->rtype.rt] ? 1 : 0;
-			break;
+			return 1;
 		case FUNC_SLL:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] << inst->rtype.shamt;
-			break;
+			return 1;
 		case FUNC_SRL:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> inst->rtype.shamt;
-			break;
+			return 1;
 		case FUNC_SLLV:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] << ctx->regs[inst->rtype.rs];
-			break;
+			return 1;
 		case FUNC_SRLV:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> ctx->regs[inst->rtype.rs];
-			break;
+			return 1;
 		case FUNC_SRA:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> inst->rtype.shamt;
 			if (ctx->regs[inst->rtype.rt] >> 31) {
@@ -277,30 +302,11 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 					ctx->regs[inst->rtype.rd] |= (1 << (31 - i));
 				}
 			}
-			break;
-		case FUNC_MULT: {
-			int64_t result = (int64_t)((int32_t)ctx->regs[inst->rtype.rs]) * (int64_t)((int32_t)ctx->regs[inst->rtype.rt]);
-			ctx->LO = (result << 32) >> 32;
-			ctx->HI = result >> 32;
-			break;
-		}
-		case FUNC_MULTU: {
-			uint64_t result = (uint64_t)ctx->regs[inst->rtype.rs] * (uint64_t)ctx->regs[inst->rtype.rt];
-			ctx->LO = (result << 32) >> 32;
-			ctx->HI = result >> 32;
-			break;
-		}
-		case FUNC_DIV:
-			ctx->LO = (int32_t)ctx->regs[inst->rtype.rs] / (int32_t)ctx->regs[inst->rtype.rt];
-			ctx->HI = (int32_t)ctx->regs[inst->rtype.rs] % (int32_t)ctx->regs[inst->rtype.rt];
-			break;
-		case FUNC_DIVU:
-			ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
-			ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
-			break;
+			return 1;
+		default:
+			printf("\nUnknown R-type instruction! Terminating...\n");
+			return 0;
 	}
-
-	return 1;
 }
 
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
@@ -310,14 +316,15 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			return 0;
 		case SYSCALL_PRINT_INT:
 			printf("%d", ctx->regs[a0]);
-			break;
+			return 1;
 		case SYSCALL_READ_INT:
 			if (scanf("%d", &ctx->regs[v0]) == EOF) {
 				printf("\nUnable to read stdin. Temrinating...\n");
 				return 0;
 			}
-			break;
+			return 1;
+		default:
+			printf("\nUnknown syscall instruction! Terminating...\n");
+			return 0;
 	}
-
-	return 1;
 }
