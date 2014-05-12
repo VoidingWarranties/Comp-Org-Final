@@ -417,6 +417,18 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			free(str);
 			return 1;
 		}
+		case SYSCALL_SBRK: {
+			struct virtual_mem_region* region = (struct virtual_mem_region*)calloc(sizeof(struct virtual_mem_region), 1);
+			region->vaddr = memory->vaddr;
+			region->len = memory->len;
+			region->data = memory->data;
+			region->next = memory->next;
+			memory->vaddr = region->vaddr + region->len;
+			memory->len = ctx->regs[a0];
+			memory->data = calloc(memory->len, 1);
+			memory->next = region;
+			return 1;
+		}
 		default:
 			printf("\nUnknown syscall instruction! Terminating...\n");
 			return 0;
