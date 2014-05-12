@@ -385,12 +385,38 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 		case SYSCALL_PRINT_INT:
 			printf("%d", ctx->regs[a0]);
 			return 1;
+		case SYSCALL_PRINT_STR: {
+			uint32_t address = ctx->regs[a0];
+			char c = FetchByteFromVirtualMemory(address, memory);
+			while (c != '\0') {
+				printf("%c", c);
+				c = FetchByteFromVirtualMemory(address, memory);
+				address += 1;
+			}
+			return 1;
+		}
 		case SYSCALL_READ_INT:
 			if (scanf("%d", &ctx->regs[v0]) == EOF) {
 				printf("\nUnable to read stdin. Temrinating...\n");
 				return 0;
 			}
 			return 1;
+		case SYSCALL_READ_STR: {
+			char* str = (char*)calloc(ctx->regs[a1], sizeof(char));
+			if (fgets(str, ctx->regs[a1], stdin) == NULL) {
+				printf("\nUnable to read stdin. Terminating...\n");
+				return 0;
+			}
+			char c;
+			size_t i = 0;
+			do {
+				c = str[i];
+				StoreByteToVirtualMemory(ctx->regs[a0] + i, c, memory);
+				++i;
+			} while(c != '\0' && i < ctx->regs[a1]);
+			free(str);
+			return 1;
+		}
 		default:
 			printf("\nUnknown syscall instruction! Terminating...\n");
 			return 0;

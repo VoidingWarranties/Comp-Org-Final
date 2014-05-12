@@ -79,7 +79,9 @@ enum branching
 enum syscall
 {
 	SYSCALL_PRINT_INT	= 1,
+	SYSCALL_PRINT_STR	= 4,
 	SYSCALL_READ_INT	= 5,
+	SYSCALL_READ_STR	= 8,
 	SYSCALL_EXIT		= 10
 };
 
