@@ -47,6 +47,8 @@ enum functions
 	FUNC_SLLV	= 0x04,
 	FUNC_SRLV	= 0x06,
 	FUNC_SYSCALL	= 0x0c,
+	FUNC_MULT	= 0x18,
+	FUNC_MULTU	= 0x19,
 	FUNC_ADD	= 0x20,
 	FUNC_ADDU	= 0x21,
 	FUNC_SUB	= 0x22,
@@ -126,6 +128,8 @@ struct context
 {
 	uint32_t pc;
 	uint32_t regs[32];
+	uint32_t LO;
+	uint32_t HI;
 };
 
 enum mips_regids

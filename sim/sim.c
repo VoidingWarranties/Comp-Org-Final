@@ -278,6 +278,18 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 				}
 			}
 			break;
+		case FUNC_MULT: {
+			int64_t result = (int64_t)((int32_t)ctx->regs[inst->rtype.rs]) * (int64_t)((int32_t)ctx->regs[inst->rtype.rt]);
+			ctx->LO = (result << 32) >> 32;
+			ctx->HI = result >> 32;
+			break;
+		}
+		case FUNC_MULTU: {
+			uint64_t result = (uint64_t)ctx->regs[inst->rtype.rs] * (uint64_t)ctx->regs[inst->rtype.rt];
+			ctx->LO = (result << 32) >> 32;
+			ctx->HI = result >> 32;
+			break;
+		}
 	}
 
 	return 1;

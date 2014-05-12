@@ -34,8 +34,8 @@ Comp-Org-Final
 - ~~srlv~~
 - div
 - divu
-- mult
-- multu
+- ~~mult~~
+- ~~multu~~
 
 #### I-type:
 - ~~addi~~
