@@ -47,6 +47,8 @@ enum functions
 	FUNC_SLLV	= 0x04,
 	FUNC_SRLV	= 0x06,
 	FUNC_SYSCALL	= 0x0c,
+	FUNC_MFHI	= 0x10,
+	FUNC_MFLO	= 0x12,
 	FUNC_MULT	= 0x18,
 	FUNC_MULTU	= 0x19,
 	FUNC_DIV	= 0x1a,

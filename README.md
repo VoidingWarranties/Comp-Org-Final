@@ -48,8 +48,8 @@ Comp-Org-Final
 - ~~sltiu~~
 
 #### Move:
-- mfhi
-- mflo
+- ~~mfhi~~
+- ~~mflo~~
 
 #### Branch:
 - beq

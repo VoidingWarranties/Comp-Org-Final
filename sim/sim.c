@@ -303,6 +303,12 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 				}
 			}
 			return 1;
+		case FUNC_MFHI:
+			ctx->regs[inst->rtype.rd] = ctx->HI;
+			break;
+		case FUNC_MFLO:
+			ctx->regs[inst->rtype.rd] = ctx->LO;
+			break;
 		default:
 			printf("\nUnknown R-type instruction! Terminating...\n");
 			return 0;
