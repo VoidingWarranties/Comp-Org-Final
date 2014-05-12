@@ -32,8 +32,8 @@ Comp-Org-Final
 - ~~sra~~
 - ~~srl~~
 - ~~srlv~~
-- div
-- divu
+- ~~div~~
+- ~~divu~~
 - ~~mult~~
 - ~~multu~~
 

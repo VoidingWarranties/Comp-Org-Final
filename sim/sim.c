@@ -290,6 +290,14 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 			ctx->HI = result >> 32;
 			break;
 		}
+		case FUNC_DIV:
+			ctx->LO = (int32_t)ctx->regs[inst->rtype.rs] / (int32_t)ctx->regs[inst->rtype.rt];
+			ctx->HI = (int32_t)ctx->regs[inst->rtype.rs] % (int32_t)ctx->regs[inst->rtype.rt];
+			break;
+		case FUNC_DIVU:
+			ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
+			ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
+			break;
 	}
 
 	return 1;

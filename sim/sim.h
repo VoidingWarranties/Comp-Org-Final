@@ -49,6 +49,8 @@ enum functions
 	FUNC_SYSCALL	= 0x0c,
 	FUNC_MULT	= 0x18,
 	FUNC_MULTU	= 0x19,
+	FUNC_DIV	= 0x1a,
+	FUNC_DIVU	= 0x1b,
 	FUNC_ADD	= 0x20,
 	FUNC_ADDU	= 0x21,
 	FUNC_SUB	= 0x22,
