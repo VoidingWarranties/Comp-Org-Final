@@ -52,12 +52,12 @@ Comp-Org-Final
 - ~~mflo~~
 
 #### Branch:
-- beq
+- ~~beq~~
+- ~~bne~~
 - bgez
 - bgtz
 - blez
 - bltz
-- bne
 - bgezal
 - bltzal
 

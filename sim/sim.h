@@ -23,6 +23,8 @@ enum opcodes
 	OP_JAL		= 0x03,
 
 	OP_RTYPE	= 0x00,
+	OP_BEQ		= 0x04,
+	OP_BNE		= 0x05,
 	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
 	OP_SLTI		= 0x0a,

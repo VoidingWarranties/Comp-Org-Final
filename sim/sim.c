@@ -160,6 +160,18 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	}
 
 	// insert instructions that don't modify rt here
+	switch (opcode) {
+		case OP_BEQ:
+			if (ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt]) {
+				ctx->pc += 4 * inst->itype.imm;
+			}
+			return 1;
+		case OP_BNE:
+			if (ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt]) {
+				ctx->pc += 4 * inst->itype.imm;
+			}
+			return 1;
+	}
 
 	if (inst->itype.rt == zero &&
 	    (opcode == OP_ADDI || opcode == OP_ADDIU || opcode == OP_SLTI || opcode == OP_SLTIU ||
