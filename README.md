@@ -58,8 +58,8 @@ Comp-Org-Final
 - ~~bltz~~
 - bgezal
 - bltzal
-- bgtz
-- blez
+- ~~bgtz~~
+- ~~blez~~
 
 #### Jump:
 - j

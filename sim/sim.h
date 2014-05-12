@@ -26,6 +26,8 @@ enum opcodes
 	OP_BLTZ_BGEZ	= 0x01,
 	OP_BEQ		= 0x04,
 	OP_BNE		= 0x05,
+	OP_BLEZ		= 0x06,
+	OP_BGTZ		= 0x07,
 	OP_ADDI		= 0x08,
 	OP_ADDIU	= 0x09,
 	OP_SLTI		= 0x0a,
