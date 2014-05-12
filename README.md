@@ -56,8 +56,8 @@ Comp-Org-Final
 - ~~bne~~
 - ~~bgez~~
 - ~~bltz~~
-- bgezal
-- bltzal
+- ~~bgezal~~
+- ~~bltzal~~
 - ~~bgtz~~
 - ~~blez~~
 

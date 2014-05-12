@@ -72,7 +72,9 @@ enum functions
 enum branching
 {
 	BRANCH_BLTZ	= 0x00,
-	BRANCH_BGEZ	= 0x01
+	BRANCH_BGEZ	= 0x01,
+	BRANCH_BLTZAL	= 0x10,
+	BRANCH_BGEZAL	= 0x11
 };
 
 enum syscall
