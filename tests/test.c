@@ -104,18 +104,18 @@ void test_slti(union mips_instruction inst, struct virtual_mem_region* memory, s
 	ReadELF("slti.elf", &memory, &ctx);
 	RunSimulator(memory, &ctx);
 
-	                                                 // addi t0, zero, 0
-	assert(ctx.regs[s0] == 0);                       // slti s0, t0, 0
-	assert(ctx.regs[s1] == 0);                       // slti s1, t0, -1
-	assert(ctx.regs[s2] == 1);                       // slti s2, t0, 1
-	                                                 // addi t0, zero, -1
-	assert(ctx.regs[s3] == 1);                       // slti s3, t0, 0
-	assert(ctx.regs[s4] == 0);                       // slti s4, t0, -1
-	assert(ctx.regs[s5] == 0);                       // slti s5, t0, -2
-	                                                 // addi t0, zero, INT16_MIN
-	assert(ctx.regs[s6] == 1);                       // slti s6, t0, INT16_MAX
-	                                                 // addi t0, zero, INT16_MAX
-	assert(ctx.regs[s7] == 0);                       // slti s7, t0, INT16_MIN
+	                           // addi t0, zero, 0
+	assert(ctx.regs[s0] == 0); // slti s0, t0, 0
+	assert(ctx.regs[s1] == 0); // slti s1, t0, -1
+	assert(ctx.regs[s2] == 1); // slti s2, t0, 1
+	                           // addi t0, zero, -1
+	assert(ctx.regs[s3] == 1); // slti s3, t0, 0
+	assert(ctx.regs[s4] == 0); // slti s4, t0, -1
+	assert(ctx.regs[s5] == 0); // slti s5, t0, -2
+	                           // addi t0, zero, INT16_MIN
+	assert(ctx.regs[s6] == 1); // slti s6, t0, INT16_MAX
+	                           // addi t0, zero, INT16_MAX
+	assert(ctx.regs[s7] == 0); // slti s7, t0, INT16_MIN
 	printf("#################### slti tests finished  ######################################\n");
 }
 
@@ -125,18 +125,18 @@ void test_sltiu(union mips_instruction inst, struct virtual_mem_region* memory, 
 	ReadELF("sltiu.elf", &memory, &ctx);
 	RunSimulator(memory, &ctx);
 
-	                                                 // addi t0, zero, 0
-	assert(ctx.regs[s0] == 0);                       // sltiu s0, t0, 0
-	assert(ctx.regs[s1] == 1);                       // sltiu s1, t0, -1
-	assert(ctx.regs[s2] == 1);                       // sltiu s2, t0, 1
-	                                                 // addi t0, zero, -1
-	assert(ctx.regs[s3] == 0);                       // sltiu s3, t0, 0
-	assert(ctx.regs[s4] == 0);                       // sltiu s4, t0, -1
-	assert(ctx.regs[s5] == 0);                       // sltiu s5, t0, -2
-	                                                 // addi t0, zero, 0
-	assert(ctx.regs[s6] == 1);                       // sltiu s6, t0, UINT16_MAX
-	                                                 // addi t0, zero, UINT16_MAX
-	assert(ctx.regs[s7] == 0);                       // sltiu s7, t0, 0
+	                           // addi t0, zero, 0
+	assert(ctx.regs[s0] == 0); // sltiu s0, t0, 0
+	assert(ctx.regs[s1] == 1); // sltiu s1, t0, -1
+	assert(ctx.regs[s2] == 1); // sltiu s2, t0, 1
+	                           // addi t0, zero, -1
+	assert(ctx.regs[s3] == 0); // sltiu s3, t0, 0
+	assert(ctx.regs[s4] == 0); // sltiu s4, t0, -1
+	assert(ctx.regs[s5] == 0); // sltiu s5, t0, -2
+	                           // addi t0, zero, 0
+	assert(ctx.regs[s6] == 1); // sltiu s6, t0, UINT16_MAX
+	                           // addi t0, zero, UINT16_MAX
+	assert(ctx.regs[s7] == 0); // sltiu s7, t0, 0
 	printf("#################### sltiu tests finished  ######################################\n");
 }
 
@@ -146,6 +146,7 @@ int main()
 	struct virtual_mem_region* memory = NULL;
 	struct context ctx;
 
+	// I-type
 	test_addi(inst, memory, ctx);
 	test_addiu(inst, memory, ctx);
 	test_andi(inst, memory, ctx);
