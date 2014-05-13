@@ -400,8 +400,8 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			char c = FetchByteFromVirtualMemory(address, memory);
 			while (c != '\0') {
 				printf("%c", c);
-				c = FetchByteFromVirtualMemory(address, memory);
 				address += 1;
+				c = FetchByteFromVirtualMemory(address, memory);
 			}
 			return 1;
 		}
