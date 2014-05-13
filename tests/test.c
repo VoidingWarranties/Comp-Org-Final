@@ -18,6 +18,7 @@ int main()
 	test_lui(inst, memory, ctx);
 	test_slti(inst, memory, ctx);
 	test_sltiu(inst, memory, ctx);
+	test_sw(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;

@@ -138,3 +138,22 @@ void test_sltiu(union mips_instruction inst, struct virtual_mem_region* memory, 
 	assert(ctx.regs[s7] == 0); // sltiu s7, t0, 0
 	printf("#################### sltiu tests finished  ######################################\n");
 }
+
+void test_sw(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### sw tests start ##########################################\n");
+	ReadELF("MIPS_tests/sw.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	size_t last_index = (memory->len / 4) - 1;
+
+	                                            // addi t0, zero, 0
+	assert(memory->data[last_index - 0] == 0);  // sw t0, 0(sp)
+	                                            // addi t0, zero, 1
+	assert(memory->data[last_index - 1] == 1);  // sw t0, 4(sp)
+	                                            // addi t0, zero, 2
+	assert(memory->data[last_index - 2] == 2);  // sw t0, 8(sp)
+	                                            // addi t0, zero, -1
+	assert(memory->data[last_index - 3] == -1); // sw t0, 12(sp)
+	printf("#################### sw tests finished  ######################################\n");
+}
