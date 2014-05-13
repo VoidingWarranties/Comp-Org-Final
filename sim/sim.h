@@ -180,7 +180,7 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx);
 
 uint32_t FetchWordFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory);
 void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_mem_region* memory);
-uint8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory);
+int8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory);
 void StoreByteToVirtualMemory(uint32_t address, uint8_t value, struct virtual_mem_region* memory);
 
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);

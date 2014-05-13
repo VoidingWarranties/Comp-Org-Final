@@ -72,7 +72,7 @@ void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_m
 	exit(1);
 }
 
-uint8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory)
+int8_t FetchByteFromVirtualMemory(uint32_t address, struct virtual_mem_region* memory)
 {
 	//Traverse the linked list until we find the range of interest
 	while(memory != NULL)
@@ -163,36 +163,36 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	switch (opcode) {
 		case OP_BEQ:
 			if (ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt]) {
-				ctx->pc += 4 * inst->itype.imm;
+				ctx->pc += (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
 		case OP_BNE:
 			if (ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt]) {
-				ctx->pc += 4 * inst->itype.imm;
+				ctx->pc +=  (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
 		case OP_BLTZ_BGEZ:
 			switch (inst->itype.rt) {
 				case BRANCH_BLTZ:
 					if (ctx->regs[inst->itype.rs] < 0) {
-						ctx->pc += (inst->itype.imm << 2);
+						ctx->pc += (int16_t)inst->itype.imm << 2;
 					}
 					return 1;
 				case BRANCH_BGEZ:
 					if (ctx->regs[inst->itype.rs] >= 0) {
-						ctx->pc += (inst->itype.imm << 2);
+						ctx->pc += (int16_t)inst->itype.imm << 2;
 					}
 					return 1;
 				case BRANCH_BLTZAL:
 					if (ctx->regs[inst->itype.rs] < 0) {
 						ctx->regs[ra] = ctx->pc + 4;
-						ctx->pc += (inst->itype.imm << 2);
+						ctx->pc += (int16_t)inst->itype.imm << 2;
 					}
 					return 1;
 				case BRANCH_BGEZAL:
 					if (ctx->regs[inst->itype.rs] >= 0) {
 						ctx->regs[ra] = ctx->pc + 4;
-						ctx->pc += (inst->itype.imm << 2);
+						ctx->pc += (int16_t)inst->itype.imm << 2;
 					}
 					return 1;
 				default:
@@ -202,21 +202,25 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_BLEZ:
 			// do we need to check if rt is 0???
 			if (ctx->regs[inst->itype.rs] <= 0) {
-				ctx->pc += (inst->itype.imm << 2);
+				ctx->pc += (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
 		case OP_BGTZ:
 			// do we need to check if rt is 0???
 			if (ctx->regs[inst->itype.rs] > 0) {
-				ctx->pc += (inst->itype.imm << 2);
+				ctx->pc += (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
 		case OP_J:
-			ctx->pc = inst->jtype.addr << 2;
+			// The upper 4 bits are the same as the upper 4 bits of the next pc.
+			// The lower 28 bits are the addr shifted left by 2.
+			ctx->pc = ((0b1111 << 28) & ctx->pc) | (inst->jtype.addr << 2);
 			return 1;
 		case OP_JAL:
 			ctx->regs[ra] = ctx->pc + 4;
-			ctx->pc = inst->jtype.addr << 2;
+			// The upper 4 bits are the same as the upper 4 bits of the next pc.
+			// The lower 28 bits are the addr shifted left by 2.
+			ctx->pc = ((0b1111 << 28) & ctx->pc) | (inst->jtype.addr << 2);
 			return 1;
 	}
 
@@ -230,11 +234,11 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 	switch (opcode) {
 		// I-type
 		case OP_ADDI:
-			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm;
 			return 1;
 		case OP_ADDIU:
 			// addiu is effectively the same as addi since we are not implementing overflow traps here
-			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm;
 			return 1;
 		case OP_SLTI:
 			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int16_t)inst->itype.imm ? 1 : 0;
@@ -257,16 +261,16 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			ctx->regs[inst->itype.rt] = inst->itype.imm << 16;
 			return 1;
 		case OP_LW:
-			ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
+			ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, memory);
 			return 1;
 		case OP_SW:
-			StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
+			StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 			return 1;
 		case OP_LB:
-			ctx->regs[inst->itype.rt] = FetchByteFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
+			ctx->regs[inst->itype.rt] = (int8_t)FetchByteFromVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, memory);
 			return 1;
 		case OP_SB:
-			StoreByteToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
+			StoreByteToVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 			return 1;
 
 		default:
@@ -352,10 +356,16 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> inst->rtype.shamt;
 			return 1;
 		case FUNC_SLLV:
-			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] << ctx->regs[inst->rtype.rs];
+			// The official MIPS specification states that rt should be shifted by the amount specified
+			// by the 5 least significant bits of rs. This info doesn't seem to be in the textbook, but
+			// I trust the official MIPS specification more than anything else.
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] << (ctx->regs[inst->rtype.rs] & 0b11111);
 			return 1;
 		case FUNC_SRLV:
-			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> ctx->regs[inst->rtype.rs];
+			// The official MIPS specification states that rt should be shifted by the amount specified
+			// by the 5 least significant bits of rs. This info doesn't seem to be in the textbook, but
+			// I trust the official MIPS specification more than anything else.
+			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> (ctx->regs[inst->rtype.rs] & 0b11111);
 			return 1;
 		case FUNC_SRA:
 			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt] >> inst->rtype.shamt;
