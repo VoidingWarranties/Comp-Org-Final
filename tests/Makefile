@@ -1,4 +1,4 @@
-FILES=addi addiu andi ori
+FILES=addi addiu andi ori xori lui
 .PHONY: all c assembly
 all:
 	gcc test.c ../sim/sim.c -o test --std=c99
