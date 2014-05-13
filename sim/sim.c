@@ -427,6 +427,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			free(str);
 			return 1;
 		}
+		// I don't think we were required to implement this, but here it is anyways :)
 		case SYSCALL_SBRK: {
 			struct virtual_mem_region* region = (struct virtual_mem_region*)calloc(sizeof(struct virtual_mem_region), 1);
 			region->vaddr = memory->vaddr;
