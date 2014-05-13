@@ -14,6 +14,7 @@ __start:
 	andi	s3, t0, UINT16_MAX
 	andi	s4, t0, 1
 	andi	s5, t0, 5
+	andi	s6, zero, 0
 
 quit:
 	li		v0,	10
