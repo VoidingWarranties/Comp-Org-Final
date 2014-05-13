@@ -1,94 +1,58 @@
 #include <stdio.h>
-#include <stdint.h>
+#include <assert.h>
 
 #include "../sim/sim.h"
 
-void test_add(union mips_instruction inst, struct context ctx)
+void test_addi(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
 {
-	inst.rtype.opcode = OP_RTYPE;
-	inst.rtype.func = FUNC_ADD;
-	inst.rtype.rs = t0;
-	inst.rtype.rt = t1;
-	inst.rtype.rd = t2;
+	printf("#################### addi tests start ##########################################\n");
+	ReadELF("addi.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
 
-	size_t num_tests = 10;
-	uint32_t t0_tests[] = {INT32_MIN,	INT32_MIN,	INT32_MIN,	0,			-1,			-1,	1,	-1,	0,	0};
-	uint32_t t1_tests[] = {0,			1,			INT32_MAX,	INT32_MAX,	INT32_MAX,	-1,	1,	1,	-1,	0};
-
-	printf("Testing add:\t");
-	for (size_t i = 0; i < num_tests; ++i) {
-		ctx.regs[inst.rtype.rs] = t0_tests[i];
-		ctx.regs[inst.rtype.rt] = t1_tests[i];
-		if (SimulateInstruction(&inst, NULL, &ctx) == 0 || ctx.regs[inst.rtype.rd] != t0_tests[i] + t1_tests[i]) {
-			printf("\n  test failed: %d != %d + %d", ctx.regs[inst.rtype.rd], t0_tests[i], t1_tests[i]);
-			exit(1);
-		}
-		printf(".");
-	}
-	printf("\tsuccess!\n");
-
-	inst.rtype.func = FUNC_ADDU;
-	printf("Testing addu:\t");
-	for (size_t i = 0; i < num_tests; ++i) {
-		ctx.regs[inst.rtype.rs] = t0_tests[i];
-		ctx.regs[inst.rtype.rt] = t1_tests[i];
-		if (SimulateInstruction(&inst, NULL, &ctx) == 0 || ctx.regs[inst.rtype.rd] != t0_tests[i] + t1_tests[i]) {
-			printf("\n  test failed: %d != %d + %d", ctx.regs[inst.rtype.rd], t0_tests[i], t1_tests[i]);
-			exit(1);
-		}
-		printf(".");
-	}
-	printf("\tsuccess!\n");
+	assert(ctx.regs[s0] == 0);	// addi s0, $zero, 0
+	assert(ctx.regs[s1] == 1);	// addi s1, $zero, 1
+	assert(ctx.regs[s2] == -1);	// addi s2, $zero, -1
+	assert(ctx.regs[s3] == 0);	// addi s3, s2, 1
+	printf("#################### addi tests finished  ######################################\n");
 }
 
-void test_sub(union mips_instruction inst, struct context ctx)
+void test_addiu(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
 {
-	inst.rtype.opcode = OP_RTYPE;
-	inst.rtype.func = FUNC_SUB;
-	inst.rtype.rs = t0;
-	inst.rtype.rt = t1;
-	inst.rtype.rd = t2;
+	printf("#################### addiu tests start ##########################################\n");
+	ReadELF("addiu.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
 
-	size_t num_tests = 13;
-	uint32_t t0_tests[] = {INT32_MIN, INT32_MIN, INT32_MIN, 0,         1,         0, 1,  -1, -1, 1, INT32_MAX, INT32_MAX, INT32_MAX};
-	uint32_t t1_tests[] = {0,         -1,        INT32_MIN, INT32_MIN, INT32_MIN, 0, -1, 1,  -1, 1, 0,         1,         INT32_MAX};
+	assert(ctx.regs[s0] == 0);	// addiu s0, $zero, 0
+	assert(ctx.regs[s1] == 1);	// addiu s1, $zero, 1
+	assert(ctx.regs[s2] == -1);	// addiu s2, $zero, -1
+	assert(ctx.regs[s3] == 0);	// addiu s3, s2, 1
+	printf("#################### addiu tests finished  ######################################\n");
+}
 
-	printf("Testing sub:\t");
-	for (size_t i = 0; i < num_tests; ++i) {
-		ctx.regs[inst.rtype.rs] = t0_tests[i];
-		ctx.regs[inst.rtype.rt] = t1_tests[i];
-		if (SimulateInstruction(&inst, NULL, &ctx) == 0 || ctx.regs[inst.rtype.rd] != t0_tests[i] - t1_tests[i]) {
-			printf("\n  test failed: %d != %d + %d", ctx.regs[inst.rtype.rd], t0_tests[i], t1_tests[i]);
-			exit(1);
-		}
-		printf(".");
-	}
-	printf("\tsuccess!\n");
+void test_andi(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### andi tests start ##########################################\n");
+	ReadELF("andi.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
 
-	inst.rtype.func = FUNC_SUBU;
-	printf("Testing subu:\t");
-	for (size_t i = 0; i < num_tests; ++i) {
-		ctx.regs[inst.rtype.rs] = t0_tests[i];
-		ctx.regs[inst.rtype.rt] = t1_tests[i];
-		if (SimulateInstruction(&inst, NULL, &ctx) == 0 || ctx.regs[inst.rtype.rd] != t0_tests[i] - t1_tests[i]) {
-			printf("\n  test failed: %d != %d + %d", ctx.regs[inst.rtype.rd], t0_tests[i], t1_tests[i]);
-			exit(1);
-		}
-		printf(".");
-	}
-	printf("\tsuccess!\n");
+	assert(ctx.regs[s0] == 0);			// andi s0, zero, UINT16_MAX
+	assert(ctx.regs[s1] == 0);			// andi s1, zero, 1
+	                          			// addiu t0, zero, UINT16_MAX
+	assert(ctx.regs[s3] == UINT16_MAX);	// andi s3, t0, UINT16_MAX
+	assert(ctx.regs[s4] == 1);			// andi s4, t0, 1
+	assert(ctx.regs[s5] == 5);			// andi s5, t0, 5
+	printf("#################### andi tests finished  ######################################\n");
 }
 
 int main()
 {
-	struct context ctx;
-	for (size_t i = 0; i < 32; ++i) {
-		ctx.regs[i] = 0;
-	}
 	union mips_instruction inst;
+	struct virtual_mem_region* memory = NULL;
+	struct context ctx;
 
-	test_add(inst, ctx);
-	test_sub(inst, ctx);
+	test_addi(inst, memory, ctx);
+	test_addiu(inst, memory, ctx);
+	test_andi(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;
