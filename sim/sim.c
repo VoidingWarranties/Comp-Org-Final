@@ -212,11 +212,11 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			}
 			return 1;
 		case OP_J:
-			ctx->pc += (inst->jtype.addr << 2);
+			ctx->pc = inst->jtype.addr << 2;
 			return 1;
 		case OP_JAL:
 			ctx->regs[ra] = ctx->pc + 4;
-			ctx->pc += (inst->jtype.addr << 2);
+			ctx->pc = inst->jtype.addr << 2;
 			return 1;
 	}
 
