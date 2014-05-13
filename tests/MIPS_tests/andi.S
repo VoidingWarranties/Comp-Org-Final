@@ -19,5 +19,5 @@ __start:
 	andi	s5, zero, 0
 
 quit:
-	li		v0,	10
+	li	v0, 10
 	syscall

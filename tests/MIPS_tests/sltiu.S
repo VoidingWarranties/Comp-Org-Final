@@ -8,26 +8,26 @@
 
 .globl __start
 __start:
-	addi t0, zero, 0
+	addi	t0, zero, 0
 
-	sltiu s0, t0, 0
-	sltiu s1, t0, -1
-	sltiu s2, t0, 1
+	sltiu	s0, t0, 0
+	sltiu	s1, t0, -1
+	sltiu	s2, t0, 1
 
-	addi t0, zero, -1
+	addi	t0, zero, -1
 
-	sltiu s3, t0, 0
-	sltiu s4, t0, -1
-	sltiu s5, t0, -2
+	sltiu	s3, t0, 0
+	sltiu	s4, t0, -1
+	sltiu	s5, t0, -2
 
-	addi t0, zero, 0
+	addi	t0, zero, 0
 
-	sltiu s6, t0, UINT16_MAX
+	sltiu	s6, t0, UINT16_MAX
 
-	addi t0, zero, UINT16_MAX
+	addi	t0, zero, UINT16_MAX
 
-	sltiu s7, t0, 0
+	sltiu	s7, t0, 0
 
 quit:
-	li		v0,	10
+	li	v0, 10
 	syscall

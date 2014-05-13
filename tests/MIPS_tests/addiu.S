@@ -12,5 +12,5 @@ __start:
 	addiu	s3, s2, 1
 
 quit:
-	li		v0, 10
+	li	v0, 10
 	syscall
