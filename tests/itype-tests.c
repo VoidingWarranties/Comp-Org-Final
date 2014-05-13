@@ -157,3 +157,24 @@ void test_sw(union mips_instruction inst, struct virtual_mem_region* memory, str
 	assert(memory->data[last_index - 3] == -1); // sw t0, 12(sp)
 	printf("#################### sw tests finished  ######################################\n");
 }
+
+void test_lw(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### lw tests start ##########################################\n");
+	ReadELF("MIPS_tests/lw.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	                            // addi t0, zero, 0
+	                            // sw t0, 0(sp)
+	assert(ctx.regs[s0] == 0);  // lw s0, 0(sp)
+	                            // addi t0, zero, 1
+	                            // sw t0, -4(sp)
+	assert(ctx.regs[s1] == 1);  // lw s1, -4(sp)
+	                            // addi t0, zero, 2
+	                            // sw t0, -8(sp)
+	assert(ctx.regs[s2] == 2);  // lw s2, -8(sp)
+				    // addi t0, zero, -1
+	                            // sw t0, -12(sp)
+	assert(ctx.regs[s3] == -1); // lw s3, -12(sp)
+	printf("#################### lw tests finished  ######################################\n");
+}
