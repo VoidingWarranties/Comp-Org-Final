@@ -378,10 +378,10 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm;
 			return 1;
 		case OP_SLTI:
-			ctx->regs[inst->rtype.rd] = (int32_t)ctx->regs[inst->rtype.rs] < (int16_t)inst->itype.imm ? 1 : 0;
+			ctx->regs[inst->itype.rt] = (int32_t)ctx->regs[inst->rtype.rs] < (int16_t)inst->itype.imm ? 1 : 0;
 			return 1;
 		case OP_SLTIU:
-			ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] < inst->itype.imm ? 1 : 0;
+			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] < inst->itype.imm ? 1 : 0;
 			return 1;
 		case OP_ANDI:
 			ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
