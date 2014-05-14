@@ -22,6 +22,8 @@ int main()
 	test_lw(inst, memory, ctx);
 	test_sb(inst, memory, ctx);
 	test_lb(inst, memory, ctx);
+	test_beq(inst, memory, ctx);
+	test_bne(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;

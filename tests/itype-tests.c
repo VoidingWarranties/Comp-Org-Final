@@ -219,3 +219,27 @@ void test_lb(union mips_instruction inst, struct virtual_mem_region* memory, str
 	assert(ctx.regs[s3] == -1); // lb s3, -3(sp)
 	printf("#################### lb tests finished  ######################################\n");
 }
+
+void test_beq(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### beq tests start ##########################################\n");
+	ReadELF("MIPS_tests/beq.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	assert(ctx.regs[s0] == 1);
+	assert(ctx.regs[s1] == 0);
+	assert(ctx.regs[s2] == 1);
+	printf("#################### beq tests finished  ######################################\n");
+}
+
+void test_bne(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### bne tests start ##########################################\n");
+	ReadELF("MIPS_tests/bne.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	assert(ctx.regs[s0] == 0);
+	assert(ctx.regs[s1] == 1);
+	assert(ctx.regs[s2] == 0);
+	printf("#################### bne tests finished  ######################################\n");
+}
