@@ -404,6 +404,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 			return 1;
 		case OP_LB:
+			// Note that the retrieved byte is sign extended to 32 bits.
 			ctx->regs[inst->itype.rt] = (int8_t)FetchByteFromVirtualMemory(ctx->regs[inst->itype.rs] + (int16_t)inst->itype.imm, memory);
 			return 1;
 		case OP_SB:
