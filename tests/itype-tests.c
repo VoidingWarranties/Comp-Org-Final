@@ -243,3 +243,31 @@ void test_bne(union mips_instruction inst, struct virtual_mem_region* memory, st
 	assert(ctx.regs[s2] == 0); // tests if 0b1...1 != 0b1...1
 	printf("#################### bne tests finished  ######################################\n");
 }
+
+void test_bgez(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### bgez tests start ##########################################\n");
+	ReadELF("MIPS_tests/bgez.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	assert(ctx.regs[s0] == 1); // tests if 0 >= 0
+	assert(ctx.regs[s1] == 1); // tests if 1 >= 0
+	assert(ctx.regs[s2] == 0); // tests if -1 >= 0
+	assert(ctx.regs[s3] == 1); // tests if INT32_MAX >= 0
+	assert(ctx.regs[s4] == 0); // tests if INT32_MIN >= 0
+	printf("#################### bgez tests finished  ######################################\n");
+}
+
+void test_bgtz(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### bgtz tests start ##########################################\n");
+	ReadELF("MIPS_tests/bgtz.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	assert(ctx.regs[s0] == 0); // tests if 0 > 0
+	assert(ctx.regs[s1] == 1); // tests if 1 > 0
+	assert(ctx.regs[s2] == 0); // tests if -1 > 0
+	assert(ctx.regs[s3] == 1); // tests if INT32_MAX > 0
+	assert(ctx.regs[s4] == 0); // tests if INT32_MIN > 0
+	printf("#################### bgtz tests finished  ######################################\n");
+}

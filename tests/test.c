@@ -24,6 +24,8 @@ int main()
 	test_lb(inst, memory, ctx);
 	test_beq(inst, memory, ctx);
 	test_bne(inst, memory, ctx);
+	test_bgez(inst, memory, ctx);
+	test_bgtz(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;
