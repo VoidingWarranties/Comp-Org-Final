@@ -20,6 +20,8 @@ int main()
 	test_sltiu(inst, memory, ctx);
 	test_sw(inst, memory, ctx);
 	test_lw(inst, memory, ctx);
+	test_sb(inst, memory, ctx);
+	test_lb(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;

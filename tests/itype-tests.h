@@ -8,3 +8,5 @@ void test_slti(union mips_instruction inst, struct virtual_mem_region* memory, s
 void test_sltiu(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_sw(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_lw(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_sb(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_lb(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);

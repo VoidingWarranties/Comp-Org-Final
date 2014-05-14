@@ -150,11 +150,11 @@ void test_sw(union mips_instruction inst, struct virtual_mem_region* memory, str
 	                                            // addi t0, zero, 0
 	assert(memory->data[last_index - 0] == 0);  // sw t0, 0(sp)
 	                                            // addi t0, zero, 1
-	assert(memory->data[last_index - 1] == 1);  // sw t0, 4(sp)
+	assert(memory->data[last_index - 1] == 1);  // sw t0, -4(sp)
 	                                            // addi t0, zero, 2
-	assert(memory->data[last_index - 2] == 2);  // sw t0, 8(sp)
+	assert(memory->data[last_index - 2] == 2);  // sw t0, -8(sp)
 	                                            // addi t0, zero, -1
-	assert(memory->data[last_index - 3] == -1); // sw t0, 12(sp)
+	assert(memory->data[last_index - 3] == -1); // sw t0, -12(sp)
 	printf("#################### sw tests finished  ######################################\n");
 }
 
@@ -177,4 +177,46 @@ void test_lw(union mips_instruction inst, struct virtual_mem_region* memory, str
 	                            // sw t0, -12(sp)
 	assert(ctx.regs[s3] == -1); // lw s3, -12(sp)
 	printf("#################### lw tests finished  ######################################\n");
+}
+
+void test_sb(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### sb tests start ##########################################\n");
+	ReadELF("MIPS_tests/sb.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	uint8_t* byte_data = (uint8_t*)(memory->data);
+	size_t last_index = memory->len - 4;
+
+	                                          // addi t0, zero, 0
+	assert(byte_data[last_index - 0] == 0);   // sb t0, 0(sp)
+	                                          // addi t0, zero, 1
+	assert(byte_data[last_index - 1] == 1);   // sb t0, -1(sp)
+	                                          // addi t0, zero, 2
+	assert(byte_data[last_index - 2] == 2);   // sb t0, -2(sp)
+	                                          // addi t0, zero, -1
+	assert(byte_data[last_index - 3] == 255); // sb t0, -3(sp)
+	printf("#################### sb tests finished  ######################################\n");
+}
+
+void test_lb(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### lb tests start ##########################################\n");
+	ReadELF("MIPS_tests/lb.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	                             // addi t0, zero, 0
+	                             // sb t0, 0(sp)
+	assert(ctx.regs[s0] == 0);   // lb s0, 0(sp)
+	                             // addi t0, zero, 1
+	                             // sb t0, -1(sp)
+	assert(ctx.regs[s1] == 1);   // lb s1, -1(sp)
+	                             // addi t0, zero, 2
+	                             // sb t0, -2(sp)
+	assert(ctx.regs[s2] == 2);   // lb s2, -2(sp)
+	                             // addi t0, zero, -1
+	                             // sb t0, -3(sp)
+				     printf("s3: 0x%x\n", ctx.regs[s3]);
+	assert(ctx.regs[s3] == -1); // lb s3, -3(sp)
+	printf("#################### lb tests finished  ######################################\n");
 }
