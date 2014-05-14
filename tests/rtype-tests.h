@@ -5,3 +5,5 @@ void test_subu(union mips_instruction inst, struct virtual_mem_region* memory, s
 void test_and(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_or(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_xor(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_slt(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_sltu(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);

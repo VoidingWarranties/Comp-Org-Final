@@ -128,3 +128,55 @@ void test_xor(union mips_instruction inst, struct virtual_mem_region* memory, st
 	assert(ctx.regs[s8] == 17); // xor s8, t1, t0
 	printf("#################### xor tests finished  ######################################\n");
 }
+
+void test_slt(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### slt tests start ##########################################\n");
+	ReadELF("MIPS_tests/slt.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	                           // addi t0, zero, 0
+	assert(ctx.regs[s0] == 0); // slt s0, zero, t0
+	                           // addi t0, zero, -1
+	assert(ctx.regs[s1] == 0); // slt s1, zero, t0
+	                           // addi t0, zero, 1
+	assert(ctx.regs[s2] == 1); // slt s2, zero, t0
+				   // addi t0, zero, -1
+	                           // addi t1, zero, 0
+	assert(ctx.regs[s3] == 1); // slt s3, t0, t1
+	                           // addi t1, zero, -1
+	assert(ctx.regs[s4] == 0); // slt s4, t0, t1
+	                           // addi t1, zero, -2
+	assert(ctx.regs[s5] == 0); // slt s5, t0, t1
+	                           // addi t0, zero, INT16_MIN
+	                           // addi t1, zero, INT16_MAX
+	assert(ctx.regs[s6] == 1); // slt s6, t0, t1
+	assert(ctx.regs[s7] == 0); // slt s7, t1, t0
+	printf("#################### slt tests finished  ######################################\n");
+}
+
+void test_sltu(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx)
+{
+	printf("#################### sltu tests start ##########################################\n");
+	ReadELF("MIPS_tests/sltu.elf", &memory, &ctx);
+	RunSimulator(memory, &ctx);
+
+	                           // addi t0, zero, 0
+	assert(ctx.regs[s0] == 0); // sltu s0, zero, t0
+	                           // addi t0, zero, -1
+	assert(ctx.regs[s1] == 1); // sltu s1, zero, t0
+	                           // addi t0, zero, 1
+	assert(ctx.regs[s2] == 1); // sltu s2, zero, t0
+				   // addi t0, zero, -1
+	                           // addi t1, zero, 0
+	assert(ctx.regs[s3] == 0); // sltu s3, t0, t1
+	                           // addi t1, zero, -1
+	assert(ctx.regs[s4] == 0); // sltu s4, t0, t1
+	                           // addi t1, zero, -2
+	assert(ctx.regs[s5] == 0); // sltu s5, t0, t1
+	                           // addi t0, zero, 0
+	                           // addi t1, zero, UINT16_MAX
+	assert(ctx.regs[s6] == 1); // sltu s6, t0, t1
+	assert(ctx.regs[s7] == 0); // sltu s7, t1, t0
+	printf("#################### sltu tests finished  ######################################\n");
+}

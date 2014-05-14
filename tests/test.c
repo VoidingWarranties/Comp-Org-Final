@@ -38,6 +38,8 @@ int main()
 	test_and(inst, memory, ctx);
 	test_or(inst, memory, ctx);
 	test_xor(inst, memory, ctx);
+	test_slt(inst, memory, ctx);
+	test_sltu(inst, memory, ctx);
 
 	printf("\nAll tests completed successfully!\n");
 	return 0;
