@@ -1,4 +1,5 @@
-FILES=addi addiu andi ori xori lui slti sltiu sw lw sb lb beq bne bgez bgtz blez bltz
+FILES=addi addiu andi ori xori lui slti sltiu sw lw sb lb beq bne bgez bgtz blez bltz \
+      add addu sub subu and or xor
 .PHONY: all c assembly
 all:
 	gcc *.c ../sim/sim.c -o test --std=c99

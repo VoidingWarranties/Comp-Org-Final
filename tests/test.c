@@ -2,6 +2,7 @@
 
 #include "../sim/sim.h"
 #include "itype-tests.h"
+#include "rtype-tests.h"
 
 int main()
 {
@@ -29,6 +30,15 @@ int main()
 	test_blez(inst, memory, ctx);
 	test_bltz(inst, memory, ctx);
 
-	printf("All tests completed successfully!\n");
+	// R-type
+	test_add(inst, memory, ctx);
+	test_addu(inst, memory, ctx);
+	test_sub(inst, memory, ctx);
+	test_subu(inst, memory, ctx);
+	test_and(inst, memory, ctx);
+	test_or(inst, memory, ctx);
+	test_xor(inst, memory, ctx);
+
+	printf("\nAll tests completed successfully!\n");
 	return 0;
 }
