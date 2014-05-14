@@ -216,7 +216,6 @@ void test_lb(union mips_instruction inst, struct virtual_mem_region* memory, str
 	assert(ctx.regs[s2] == 2);   // lb s2, -2(sp)
 	                             // addi t0, zero, -1
 	                             // sb t0, -3(sp)
-				     printf("s3: 0x%x\n", ctx.regs[s3]);
 	assert(ctx.regs[s3] == -1); // lb s3, -3(sp)
 	printf("#################### lb tests finished  ######################################\n");
 }
