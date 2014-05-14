@@ -26,6 +26,8 @@ int main()
 	test_bne(inst, memory, ctx);
 	test_bgez(inst, memory, ctx);
 	test_bgtz(inst, memory, ctx);
+	test_blez(inst, memory, ctx);
+	test_bltz(inst, memory, ctx);
 
 	printf("All tests completed successfully!\n");
 	return 0;

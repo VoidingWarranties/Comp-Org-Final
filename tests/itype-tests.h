@@ -14,3 +14,5 @@ void test_beq(union mips_instruction inst, struct virtual_mem_region* memory, st
 void test_bne(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_bgez(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
 void test_bgtz(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_blez(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
+void test_bltz(union mips_instruction inst, struct virtual_mem_region* memory, struct context ctx);
