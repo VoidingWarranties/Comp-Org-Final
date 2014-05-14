@@ -338,13 +338,13 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			}
 		case OP_BLEZ:
 			// do we need to check if rt is 0???
-			if (ctx->regs[inst->itype.rs] <= 0) {
+			if ((int32_t)ctx->regs[inst->itype.rs] <= 0) {
 				ctx->pc += (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
 		case OP_BGTZ:
 			// do we need to check if rt is 0???
-			if (ctx->regs[inst->itype.rs] > 0) {
+			if ((int32_t)ctx->regs[inst->itype.rs] > 0) {
 				ctx->pc += (int16_t)inst->itype.imm << 2;
 			}
 			return 1;
