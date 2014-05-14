@@ -205,17 +205,17 @@ void test_lb(union mips_instruction inst, struct virtual_mem_region* memory, str
 	ReadELF("MIPS_tests/lb.elf", &memory, &ctx);
 	RunSimulator(memory, &ctx);
 
-	                             // addi t0, zero, 0
-	                             // sb t0, 0(sp)
-	assert(ctx.regs[s0] == 0);   // lb s0, 0(sp)
-	                             // addi t0, zero, 1
-	                             // sb t0, -1(sp)
-	assert(ctx.regs[s1] == 1);   // lb s1, -1(sp)
-	                             // addi t0, zero, 2
-	                             // sb t0, -2(sp)
-	assert(ctx.regs[s2] == 2);   // lb s2, -2(sp)
-	                             // addi t0, zero, -1
-	                             // sb t0, -3(sp)
+	                            // addi t0, zero, 0
+	                            // sb t0, 0(sp)
+	assert(ctx.regs[s0] == 0);  // lb s0, 0(sp)
+	                            // addi t0, zero, 1
+	                            // sb t0, -1(sp)
+	assert(ctx.regs[s1] == 1);  // lb s1, -1(sp)
+	                            // addi t0, zero, 2
+	                            // sb t0, -2(sp)
+	assert(ctx.regs[s2] == 2);  // lb s2, -2(sp)
+	                            // addi t0, zero, -1
+	                            // sb t0, -3(sp)
 	assert(ctx.regs[s3] == -1); // lb s3, -3(sp)
 	printf("#################### lb tests finished  ######################################\n");
 }
@@ -226,9 +226,9 @@ void test_beq(union mips_instruction inst, struct virtual_mem_region* memory, st
 	ReadELF("MIPS_tests/beq.elf", &memory, &ctx);
 	RunSimulator(memory, &ctx);
 
-	assert(ctx.regs[s0] == 1);
-	assert(ctx.regs[s1] == 0);
-	assert(ctx.regs[s2] == 1);
+	assert(ctx.regs[s0] == 1); // tests if 0 == 0
+	assert(ctx.regs[s1] == 0); // tests if 0 == 1
+	assert(ctx.regs[s2] == 1); // tests if 0b1...1 == 0b1...1
 	printf("#################### beq tests finished  ######################################\n");
 }
 
@@ -238,8 +238,8 @@ void test_bne(union mips_instruction inst, struct virtual_mem_region* memory, st
 	ReadELF("MIPS_tests/bne.elf", &memory, &ctx);
 	RunSimulator(memory, &ctx);
 
-	assert(ctx.regs[s0] == 0);
-	assert(ctx.regs[s1] == 1);
-	assert(ctx.regs[s2] == 0);
+	assert(ctx.regs[s0] == 0); // tests if 0 != 0
+	assert(ctx.regs[s1] == 1); // tests if 0 != 1
+	assert(ctx.regs[s2] == 0); // tests if 0b1...1 != 0b1...1
 	printf("#################### bne tests finished  ######################################\n");
 }
