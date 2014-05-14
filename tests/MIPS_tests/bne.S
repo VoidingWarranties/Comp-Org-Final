@@ -1,5 +1,6 @@
 /* bne test program
  * Jordan Horwich
+ * Rocco Del Priore
  */
 
 #include "registers.h"
